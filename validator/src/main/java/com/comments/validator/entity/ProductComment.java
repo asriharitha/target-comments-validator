@@ -9,49 +9,26 @@ import javax.persistence.Id;
 public class ProductComment {
 	
 	@Column(name="customerId")
-	private String customerId;
+	private Long customerId;
 	
 	@Id
 	@GeneratedValue
 	@Column(name="commentId")
-	private int commentId;
+	private Long commentId;
 	
 	@Column(name="comment")
 	private String comment;
 	
 	@Column(name="productId")
-	private String productId;
+	private Long productId;
 
-	public String getCustomerId() {
-		return customerId;
+	public ProductComment() {
+		
 	}
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
+	
+	@Override
+	public String toString() {
+		
+		return customerId + ":(comment=" + comment + ")";
 	}
-
-	public int getCommentId() {
-		return commentId;
-	}
-
-	public void setCommentId(int commentId) {
-		this.commentId = commentId;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
 }
