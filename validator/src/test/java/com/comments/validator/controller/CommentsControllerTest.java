@@ -1,7 +1,7 @@
 package com.comments.validator.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.After;
@@ -62,8 +62,7 @@ public class CommentsControllerTest {
 		Mockito.when(commentService.getById(mockProductComment.getCommentId())).thenReturn(mockProductComment);
 		
 		ResultActions resultActions = mockMvc.perform(post("/comment/post")).andExpect(status().isOk());
-		String prodCom = mapper.readValue(resultActions.andReturn().getResponse()
-															.getContentAsString(),String.class);
+		String prodCom = mapper.readValue(resultActions.andReturn().getResponse().getContentAsString(),String.class);
 		
 		String expected = "Comments cannot be posted due to objectionable content";
 		assertEquals(prodCom,expected);
@@ -73,6 +72,12 @@ public class CommentsControllerTest {
 	public void getComment() throws Exception {
 		
 		ProductComment mockProductComment = TestUtils.generateComment(1L);
+		Mockito.when(commentService.getById(mockProductComment.getCommentId())).thenReturn(mockProductComment);
+		
+		ResultActions resultActions = mockMvc.perform(get("/product/comment/" + mockProductComment.getCommentId())).andExpect(status().isOk());
+		ProductComment prodCom = mapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), ProductComment.class);
+		
+		assertEquals(prodCom, commentService.getById(mockProductComment.getCommentId()));
 	}
 	
 
