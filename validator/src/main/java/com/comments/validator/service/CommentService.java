@@ -1,12 +1,9 @@
 package com.comments.validator.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,22 +18,22 @@ public class CommentService {
 	@Autowired
 	ProfanityCheckService profanityCheckService;
 
-	public ResponseEntity<List<ProductComment>> getByProduct(Long id) {
+	public List<ProductComment> getByProduct(Long id) {
 		
-		List<ProductComment> proCom = productCommentRepository.findByProductId(id);
-		return ResponseEntity.ok().body(proCom);
+		return productCommentRepository.findByProductId(id);
+		
 	}
 
-	public ResponseEntity<ProductComment> postComment(ProductComment prodComment) {
+	public String postComment(ProductComment prodComment) {
 			if(profanityCheckService.checkBadWords(prodComment.getComment())) {
-				return ResponseEntity.ok().body(productCommentRepository.save(prodComment));
+				return "Comments cannot be posted due to objectionable content";
 			}
 			else 
-				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				return "Comments posted successfully!!";
 	}
 
-
-	public ResponseEntity<List<ProductComment>> getByProductAndComment(Long id, Long cId) {
+	
+	public List<ProductComment> getByProductAndComment(Long id, Long cId) {
 		List<ProductComment> proCom = productCommentRepository.findByProductId(id);
 		List<ProductComment> result = new ArrayList<>();
 		
@@ -46,7 +43,7 @@ public class CommentService {
 			}
 		}
 		
-		return ResponseEntity.ok().body(result);
+		return result;
 		
 	
 	}
